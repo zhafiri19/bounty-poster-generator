@@ -1,17 +1,18 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 const CameraCapture = ({ onCapture, onCancel }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [stream, setStream] = useState(null);
+  const streamRef = useRef(null); // <-- Gunakan ref untuk stream
 
   useEffect(() => {
-    // Minta akses ke kamera
     const startCamera = async () => {
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
-        videoRef.current.srcObject = mediaStream;
-        setStream(mediaStream);
+        if (videoRef.current) {
+          videoRef.current.srcObject = mediaStream;
+        }
+        streamRef.current = mediaStream; // Simpan stream ke ref
       } catch (err) {
         console.error('Gagal akses kamera:', err);
       }
@@ -20,21 +21,28 @@ const CameraCapture = ({ onCapture, onCancel }) => {
     startCamera();
 
     return () => {
-      // Hentikan kamera saat komponen unmount
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
       }
     };
-  }, [stream]);
+  }, []); // aman tanpa warning
 
   const handleCapture = () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
+
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
+
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     const imageData = canvas.toDataURL('image/png');
+
+    // Stop camera setelah capture
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+    }
+
     onCapture(imageData);
   };
 

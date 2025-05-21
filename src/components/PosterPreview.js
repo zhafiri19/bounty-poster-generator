@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import html2canvas from 'html2canvas';
 
-const PosterPreview = ({ name, bounty, title, photo }) => {
+const PosterPreview = ({ name, bounty, title, photo, frame = '' }) => {
   const previewRef = useRef();
 
   const handleDownload = async () => {
@@ -11,25 +11,45 @@ const PosterPreview = ({ name, bounty, title, photo }) => {
       useCORS: true,
     });
     const link = document.createElement('a');
-    link.download = `${name || 'bounty'}_poster.png`;
+    link.download = `${name || 'poster'}_poster.png`;
     link.href = canvas.toDataURL();
     link.click();
   };
 
-  const isFormComplete = name && bounty && title && photo;
+  const formatBounty = (amount) => {
+    const numeric = Number(amount);
+    return isNaN(numeric) ? '???' : numeric.toLocaleString('en-US');
+  };
 
-const formatBounty = (amount) => {
-  const numeric = Number(amount);
-  return isNaN(numeric) ? '???' : numeric.toLocaleString('en-US');
-};
+  const frameText = {
+    pirate: 'WANTED',
+    marine: 'MARINE',
+    revolutionary: 'REVOLUTION',
+  };
+
+  const posterClass = `poster ${frame ? `poster-frame-${frame}` : ''}`;
+
+  const isFormComplete =
+    name &&
+    photo &&
+    ((frame === 'marine' && title) ||
+      ((frame === 'pirate' || frame === 'revolutionary') && bounty && title));
+
+  // Render real-time values or fallback to ???
+  const renderValue = (val) => (val ? val.toUpperCase() : '???');
 
   return (
     <div className="text-center mt-5 px-2">
-      <div className="poster p-4" ref={previewRef}>
-        <h1 className="fw-bold text-danger">WANTED</h1>
+      <div className={posterClass} ref={previewRef}>
+        <h1
+          className="fw-bold"
+          style={{ textTransform: 'uppercase' }}
+        >
+          {frameText[frame] || 'WANTED'}
+        </h1>
 
-         {/* Gambar dengan aspect ratio supaya tidak gepeng */}
-          <div className="poster-photo mb-3 d-flex justify-content-center">
+        {/* Photo */}
+        <div className="poster-photo mb-3 d-flex justify-content-center">
           {photo ? (
             <img
               src={photo}
@@ -39,7 +59,7 @@ const formatBounty = (amount) => {
                 height: '320px',
                 objectFit: 'cover',
                 borderRadius: '8px',
-                border: '4px solid #3c2f1c',
+                border: `4px solid`,
               }}
             />
           ) : (
@@ -48,33 +68,57 @@ const formatBounty = (amount) => {
                 width: '280px',
                 height: '320px',
                 borderRadius: '8px',
-                border: '4px solid #3c2f1c',
+                border: `4px solid`,
+                backgroundColor: '#f0f0f0',
               }}
             />
           )}
         </div>
 
-        <div className="subtitle mt-2">DEAD OR ALIVE</div>
-        <h2 className="text-uppercase">{name || 'Your Name Here'}</h2>
-        <div className="subtitle text-uppercase">{title || 'Status'}</div>
-        <div className="bounty fs-4 mt-2">
-          <span className="onepiece-berry">฿</span>{' '}
-          {bounty ? formatBounty(bounty) : '???'}
+        {/* Subtitle / Rank / Title */}
+        <div
+          className="subtitle mt-2"
+          style={{ fontWeight: 'bold', fontSize: '1.25rem', textTransform: 'uppercase' }}
+        >
+          {frame === 'marine'
+            ? renderValue('World Government')
+            : renderValue(title)}
         </div>
 
-        <div className="poster-text-small">
-         Authorized by the World Government. Reward payable upon capture.
-        </div>
-        <div className="poster-marine-label">MARINE</div>
+
+        {/* Name */}
+        <h2 className="mt-1" style={{ letterSpacing: '3px', fontWeight: 'bold', textTransform: 'uppercase' }}>
+          {renderValue(name)}
+        </h2>
+
+        {/* Rank for marine */}
+        {frame === 'marine' && (
+          <div
+            style={{ fontWeight: 'bold', fontSize: '1rem', textTransform: 'uppercase' }}
+          >
+            
+            {renderValue(title)}
+          </div>
+        )}
+
+        {/* Bounty only for pirate & revolutionary */}
+        {(frame === 'pirate' || frame === 'revolutionary') && (
+          <div
+            className="bounty mt-2"
+            style={{ fontSize: '1.1rem', fontWeight: 'bold', textTransform: 'uppercase' }}
+          >
+            {bounty ? `Bounty: ${formatBounty(bounty)}` : '???'}
+          </div>
+        )}
       </div>
 
-      {isFormComplete && (
-        <div className="mt-4">
-          <button onClick={handleDownload} className="btn btn-success">
-            Download Poster
-          </button>
-        </div>
-      )}
+      <button
+        className="btn btn-success mt-4"
+        disabled={!isFormComplete}
+        onClick={handleDownload}
+      >
+        Download Poster
+      </button>
     </div>
   );
 };

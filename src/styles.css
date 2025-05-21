@@ -12,7 +12,7 @@ body {
 
 /* Poster Responsive */
 .poster {
-    background-color: #d7ccbc;
+    background-color: #fefefe;
     border: 5px solid #3c2f1c;
     width: 100%;
     max-width: 400px;
@@ -49,6 +49,21 @@ body {
     color: #b8860b;
     top: -8px;
     position: relative;
+}
+
+.poster-frame-pirate {
+    background-color: #d7ccbc;
+    color: #7b4a01;
+}
+
+.poster-frame-marine {
+    background-color: #e0f0ff;
+    color: #004080;
+}
+
+.poster-frame-revolutionary {
+    background-color: #eea6a6;
+    color: #c40707;
 }
 
 .onepiece-berry {
