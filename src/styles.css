@@ -1,0 +1,134 @@
+@import url("https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&display=swap");
+/* Untuk semua elemen: padding dan border dihitung dalam width */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+body {
+    background-color: #f8f1dc;
+    font-family: "Pirata One", cursive;
+}
+
+/* Poster Responsive */
+.poster {
+    background-color: #d7ccbc;
+    border: 5px solid #3c2f1c;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    position: relative;
+    font-family: "Pirata One", cursive;
+    border-radius: 8px;
+}
+
+/* Responsive font scaling */
+.poster h1 {
+    font-size: 3rem;
+}
+
+.poster h2 {
+    font-size: 1.6rem;
+}
+
+.poster .subtitle {
+    font-size: 1.2rem;
+}
+
+.poster .subtitle.mt-2 {
+    font-style: italic;
+    font-size: 2rem;
+    color: #444;
+}
+
+.poster .bounty {
+    font-size: 1.8rem;
+    color: #b8860b;
+    top: -8px;
+    position: relative;
+}
+
+.onepiece-berry {
+    font-family: "IM Fell English SC", serif;
+    font-weight: 900;
+    font-size: 1.2em;
+    color: #3c2f1c;
+    letter-spacing: 0.05em;
+    text-shadow: 1px 1px 0 #b28b00, -1px -1px 0 #3e2d00;
+    user-select: none;
+    vertical-align: middle;
+    top: -8px;
+    margin-right: 4px;
+}
+
+.poster-text-small {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-size: 10px;
+    color: #3c2f1c;
+    max-width: 65%;
+    text-align: left;
+    line-height: 1.2;
+    word-break: break-word;
+    white-space: normal;
+}
+
+.poster-marine-label {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #003366;
+    letter-spacing: 2px;
+}
+
+/* Responsive tweaks untuk hp dan tablet */
+@media (max-width: 768px) {
+    .poster h1 {
+        font-size: 2.4rem;
+    }
+
+    .poster h2 {
+        font-size: 1.4rem;
+    }
+
+    .poster .subtitle,
+    .poster .subtitle.mt-2 {
+        font-size: 1.3rem;
+    }
+
+    .poster .bounty {
+        font-size: 1.5rem;
+    }
+
+    .onepiece-berry {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .poster {
+        padding: 16px;
+    }
+
+    .poster h1 {
+        font-size: 2rem;
+    }
+
+    .poster h2 {
+        font-size: 1.2rem;
+    }
+
+    .poster .bounty {
+        font-size: 1.3rem;
+    }
+
+    .onepiece-berry {
+        font-size: 18px;
+    }
+}
