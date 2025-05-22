@@ -34,6 +34,15 @@ const wantedStatusOptions = [
   "Captured",
 ];
 
+const photoFilters = [
+  "none",
+  "grayscale(100%)",
+  "sepia(100%)",
+  "contrast(150%)",
+  "brightness(120%)",
+  "invert(100%)",
+];
+
 const formatRank = (rank) => rank.replace(/_/g, ' ');
 
 const PosterForm = () => {
@@ -43,8 +52,11 @@ const PosterForm = () => {
   const [bounty, setBounty] = useState('');
   const [rank, setRank] = useState(marineRanks[0]);
   const [photo, setPhoto] = useState(null);
+  const [photoFilter, setPhotoFilter] = useState('none');
   const [showOptions, setShowOptions] = useState(false);
   const [useCamera, setUseCamera] = useState(false);
+  const [nameError, setNameError] = useState('');
+  const [toastMessage, setToastMessage] = useState('');
 
   const handleStatusChange = (e) => {
     const val = e.target.value;
@@ -54,14 +66,32 @@ const PosterForm = () => {
     setBounty('');
     setWantedStatus(wantedStatusOptions[0]);
     setRank(marineRanks[0]);
+    setNameError('');
+    setToastMessage('');
   };
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      const validExtensions = ['jpg', 'jpeg', 'png'];
+      const extension = file.name.split('.').pop().toLowerCase();
+      const isValidExt = validExtensions.includes(extension);
+      const isValidSize = file.size <= 2 * 1024 * 1024;
+
+      if (!isValidExt) {
+        setToastMessage('❌ Format file harus .jpg, .jpeg, atau .png');
+        return;
+      }
+
+      if (!isValidSize) {
+        setToastMessage('❌ Ukuran file maksimum 2MB');
+        return;
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setPhoto(reader.result);
+        setToastMessage('');
       };
       reader.readAsDataURL(file);
     }
@@ -74,18 +104,43 @@ const PosterForm = () => {
     }
   };
 
+  const handleNameChange = (e) => {
+    const val = e.target.value;
+    setName(val);
+
+    if (/\d/.test(val)) {
+      setNameError('Nama tidak boleh mengandung angka.');
+      setToastMessage('⚠️ Nama tidak boleh mengandung angka.');
+    } else {
+      setNameError('');
+      setToastMessage('');
+    }
+  };
+
   const isFormComplete = () => {
     if (!status || !photo) return false;
     if ((status === 'pirate' || status === 'revolutionary') && (!bounty || wantedStatus === wantedStatusOptions[0])) return false;
     if (status === 'marine' && rank === marineRanks[0]) return false;
+    if (!name || /\d/.test(name)) return false;
     return true;
   };
 
   return (
     <div className="container my-5">
       <h2 className="text-center mb-4">Create Your Bounty Poster</h2>
-      <form className="mb-4">
 
+      {toastMessage && (
+        <div className="alert alert-warning alert-dismissible fade show" role="alert">
+          {toastMessage}
+          <button
+            type="button"
+            className="btn-close"
+            onClick={() => setToastMessage('')}
+          ></button>
+        </div>
+      )}
+
+      <form className="mb-4">
         <div className="mb-3">
           <label className="form-label">Status (Frame)</label>
           <select className="form-select" value={status} onChange={handleStatusChange}>
@@ -115,13 +170,18 @@ const PosterForm = () => {
           <label className="form-label">Name</label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${nameError ? 'is-invalid' : ''}`}
             value={name}
             disabled={!status}
-            onChange={(e) => setName(e.target.value)}
+            onChange={handleNameChange}
             placeholder={status === 'marine' ? "Nama Marine" : "Nama Karakter"}
             maxLength={30}
           />
+          {nameError && (
+            <div className="invalid-feedback">
+              {nameError}
+            </div>
+          )}
         </div>
 
         {status === 'marine' && (
@@ -195,11 +255,31 @@ const PosterForm = () => {
                   setUseCamera(false);
                   setShowOptions(false);
                 }}
-                onCancel={() => setUseCamera(false)}
+                onCancel={() => {
+                  setUseCamera(false);
+                  setShowOptions(false);
+                }}
               />
             </div>
           )}
         </div>
+
+        {photo && (
+          <div className="mb-3">
+            <label className="form-label">Filter Foto</label>
+            <select
+              className="form-select"
+              value={photoFilter}
+              onChange={(e) => setPhotoFilter(e.target.value)}
+            >
+              {photoFilters.map((filter) => (
+                <option key={filter} value={filter}>
+                  {filter === 'none' ? 'Tanpa Filter' : filter}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </form>
 
       <PosterPreview
@@ -207,6 +287,7 @@ const PosterForm = () => {
         bounty={bounty}
         title={status === 'marine' ? formatRank(rank) : wantedStatus}
         photo={photo}
+        filter={photoFilter}
         frame={status}
         isValid={isFormComplete()}
       />
