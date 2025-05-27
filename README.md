@@ -1,61 +1,111 @@
-# Bounty Poster Generator - One Piece Theme
+# 🏴‍☠️ Bounty Poster Generator – One Piece Themed Web App
 
-A React.js web app to create custom One Piece-style bounty posters with multiple frame options, photo filters, and easy download & share features.
+**Bounty Poster Generator** adalah aplikasi web berbasis React.js dan Bootstrap 5 yang memungkinkan pengguna membuat poster bounty ala One Piece secara kustom.  
+Aplikasi ini mendukung input foto, filter gambar, berbagai gaya poster (Wanted, Marine, Revolutionary), dan mode misterius!
 
----
-
-## Features
-
--   Input character name, title/rank, bounty (for Pirate & Revolutionary frames).
--   Upload photo (jpg/jpeg/png, max 2MB) with validation.
--   Choose poster frame style: Wanted (Pirate), Marine, Revolutionary.
--   Apply photo filters: none, grayscale, sepia, invert, blur.
--   Download poster as high-resolution PNG.
--   Share poster via Web Share API (on supported devices).
--   Auto validation with visual feedback (blur effect for incomplete data).
+🔗 [Live Demo](https://zhafiri19.github.io/bounty-poster-generator/)
 
 ---
 
-## Tech Stack
+## ✨ Fitur Utama
 
--   React.js (frontend)
--   Bootstrap 5 (UI styling)
--   html2canvas (to convert poster div to downloadable image)
--   Web Share API (for sharing posters)
+-   🖼️ Upload atau ambil foto langsung dari kamera
+-   🎨 Filter foto: monokrom, sepia, dll
+-   🎭 Mode Misterius (blur data belum lengkap)
+-   🪙 Pilih gaya poster: Wanted / Marine / Revolutionary
+-   💾 Download hasil sebagai gambar
+-   🖼️ Galeri hasil poster yang pernah dibuat
+-   📤 Share ke media sosial _(coming soon)_
 
 ---
 
-## Installation
+## 🚀 Tech Stack
 
-1. Clone or download this repository.
+-   **React.js**
+-   **Bootstrap 5**
+-   **HTML5 + CSS3**
+-   **JavaScript**
+-   **html2canvas**
 
-2. Open terminal/command prompt in the project folder.
+---
 
-3. Install dependencies:
+## 🛠️ Cara Instalasi (Run Secara Lokal)
+
+Pastikan kamu sudah menginstall [Node.js](https://nodejs.org) dan npm.
+
+### 1. Clone Repositori
+
+```bash
+git clone https://github.com/zhafiri19/bounty-poster-generator.git
+cd bounty-poster-generator
+```
+
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-Usage
-Fill in the form:
+### 3. Jalankan Aplikasi
 
-Enter character name.
+```bash
+npm start
+```
 
-Enter title or rank.
+Buka browser dan akses:
 
-Enter bounty amount (only for Pirate and Revolutionary frames).
+```
+http://localhost:3000
+```
 
-Upload character photo (jpg/jpeg/png, max 2MB).
+Aplikasi akan auto-reload saat kamu mengedit file sumber.
 
-Select frame type.
+---
 
-Choose a photo filter.
+## ⚙️ Build untuk Produksi
 
-Poster preview updates automatically.
+Jika kamu ingin membuild versi produksi (untuk deploy ke GitHub Pages atau server lain):
 
-If all required fields are valid, you can:
+```bash
+npm run build
+```
 
-Download poster as PNG.
+Hasil build akan muncul di folder:
 
-Share poster via supported social media apps.
+```
+/build
+```
+
+Untuk deploy ke GitHub Pages, pastikan `homepage` di `package.json` sudah diisi:
+
+```json
+"homepage": "https://username.github.io/nama-repo"
+```
+
+---
+
+## 📁 Struktur Folder
+
+```
+bounty-poster-generator/
+├── public/               # Aset publik
+├── src/
+│   ├── components/       # Komponen React
+│   ├── styles/           # CSS khusus
+│   ├── App.js            # Root component
+│   └── index.js          # Entry point
+├── .gitignore
+├── package.json
+├── README.md
+└── yarn.lock / package-lock.json
+```
+
+---
+
+## 📄 License
+
+MIT License – bebas digunakan dan dimodifikasi untuk keperluan personal maupun pembelajaran.
+
+---
+
+> Made with ❤️ + ☕ + ☠️ Spirit of the Grand Line!
