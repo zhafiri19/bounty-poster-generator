@@ -7,7 +7,7 @@
 }
 body {
     background-color: #f8f1dc;
-    font-family: cursive, "IM Fell English SC";
+    font-family: "IM Fell English SC";
 }
 
 /* Poster Responsive */
@@ -21,7 +21,7 @@ body {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
     text-align: center;
     position: relative;
-    font-family: cursive, "IM Fell English SC";
+    font-family: "IM Fell English SC";
     border-radius: 8px;
 }
 
